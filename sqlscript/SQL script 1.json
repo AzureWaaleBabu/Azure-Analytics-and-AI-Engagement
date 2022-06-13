@@ -2,7 +2,7 @@
 	"name": "SQL script 1",
 	"properties": {
 		"content": {
-			"query": "SELECT * from dbo.sales",
+			"query": "SELECT * from dbo.finance",
 			"metadata": {
 				"language": "sql"
 			},
