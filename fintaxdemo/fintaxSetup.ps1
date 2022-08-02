@@ -168,10 +168,6 @@ $tenantId = (Get-AzContext).Tenant.Id
 $userName = ((az ad signed-in-user show) | ConvertFrom-JSON).UserPrincipalName
 $forms_cogs_endpoint = "https://"+$location+".api.cognitive.microsoft.com/"
 $AADApp_Immnersive_DisplayName = "FintaxImmersiveReader-$suffix"
-$CurrentTime = Get-Date
-$AADAppClientSecretExpiration = $CurrentTime.AddDays(365)
-$AADAppClientSecret = "Smoothie@2021@2021"
-$AADApp_Multiling_DisplayName = "FintaxMultiling-$suffix"
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $forms_cogs_keys = Get-AzCognitiveServicesAccountKey -ResourceGroupName $rgName -name $forms_fintax_name
@@ -1027,7 +1023,7 @@ $reportList = $reportList.Value
 
 #update all th report ids in the poc web app...
 $ht = new-object system.collections.hashtable   
-$ht.add("#Bing_Map_Key#", "AhBNZSn-fKVSNUE5xYFbW_qajVAZwWYc8OoSHlH8nmchGuDI6ykzYjrtbwuNSrR8")
+$ht.add("#Bing_Map_Key#", "")
 $ht.add("#IMMERSIVE_READER_FINTAX_NAME#", $app_immersive_reader_fintax_name)
 $ht.add("#BOT_QNAMAKER_FINTAX_NAME#", $bot_qnamaker_fintax_name)
 $ht.add("#BOT_KEY#", $bot_key)
@@ -1064,12 +1060,17 @@ Add-Content log.txt "----Immersive Reader----"
 Write-Host "----Immersive Reader-----"
 #immersive reader
 $resourceId = az cognitiveservices account show --resource-group $rgName --name $accounts_immersive_reader_fintax_name --query "id" -o tsv    
-    
-$clientId = az ad app create --password $AADAppClientSecret --end-date $AADAppClientSecretExpiration --display-name $AADApp_Immnersive_DisplayName --query "appId" -o tsv
-             
+
+$app = az ad app create --display-name $AADApp_Immnersive_DisplayName | ConvertFrom-Json
+$clientId = $app.appId
+
+$immersiveCredential = az ad app credential reset --id $clientId | ConvertFrom-Json
+$clientsecpwd = $immersiveCredential.password
+
 az ad sp create --id $clientId | Out-Null    
-$principalId = az ad sp show --id $clientId --query "objectId" -o tsv
-        
+$principalId = az ad sp show --id $clientId --query "id" -o tsv
+start-sleep -s 60
+             
 az role assignment create --assignee $principalId --scope $resourceId --role "Cognitive Services User"    
    
 $tenantId = az account show --query "tenantId" -o tsv
@@ -1078,7 +1079,7 @@ $tenantId = az account show --query "tenantId" -o tsv
 $immersive_properties = @{}    
 $immersive_properties.TenantId = $tenantId    
 $immersive_properties.ClientId = $clientId    
-$immersive_properties.ClientSecret = $AADAppClientSecret    
+$immersive_properties.ClientSecret = $clientsecpwd    
 $immersive_properties.Subdomain = $accounts_immersive_reader_fintax_name
 $immersive_properties.PrincipalId = $principalId
 $immersive_properties.ResourceId = $resourceId
