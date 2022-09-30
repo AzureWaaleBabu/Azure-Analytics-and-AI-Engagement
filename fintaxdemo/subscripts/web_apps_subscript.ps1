@@ -82,12 +82,16 @@ RefreshTokens
 Add-Content log.txt "----Bot and multilingual App-----"
 Write-Host "----Bot and multilingual App----"
 
-$app = az ad app create --display-name $sites_app_multiling_fintax_name --password "Smoothie@2021@2021" --available-to-other-tenants | ConvertFrom-Json
+$app = az ad app create --display-name $sites_app_multiling_fintax_name | ConvertFrom-Json
 $appId = $app.appId
 
-az deployment group create --resource-group $rgName --template-file "../artifacts/qnamaker/bot-multiling-template.json" --parameters appId=$appId appSecret=$AADAppClientSecret botId=$bot_qnamaker_fintax_name newWebAppName=$sites_app_multiling_fintax_name newAppServicePlanName=$asp_multiling_fintax_name appServicePlanLocation=$location
+$appCredential = az ad app credential reset --id $appId | ConvertFrom-Json
+$appPassword = $appCredential.password
+
+az deployment group create --resource-group $rgName --template-file "../artifacts/qnamaker/bot-multiling-template.json" --parameters appId=$appId appSecret=$appPassword botId=$bot_qnamaker_fintax_name newWebAppName=$sites_app_multiling_fintax_name newAppServicePlanName=$asp_multiling_fintax_name appServicePlanLocation=$location
 
 az webapp deployment source config-zip --resource-group $rgName --name $sites_app_multiling_fintax_name --src "../artifacts/qnamaker/chatbot.zip"
+az webapp start --name $sites_app_multiling_fintax_name --resource-group $rgName 
 
 #################
 
