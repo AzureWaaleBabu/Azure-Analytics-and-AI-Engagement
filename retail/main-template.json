@@ -306,10 +306,14 @@
          "apiVersion":"2021-07-01",
          "name":"[variables('accounts_purview_retail_name')]",
          "location":"[variables('location')]",
+	"tags" : {
+	  "owner" : "anuj"
+	}
          "sku":{
             "name":"Standard",
             "capacity":1
-         },
+         }, 
+	  
          "identity":{
             "type":"SystemAssigned"
          },
@@ -318,7 +322,8 @@
                
             },
             "publicNetworkAccess":"Enabled",
-            "managedResourceGroupName":"managed-rg-purviewretailrebdemo"
+            "managedResourceGroupName":"[concat('managed-rg-', variables('accounts_purview_retail_name'))]",
+            
          }
       },
       {
