@@ -317,7 +317,7 @@
                
             },
             "publicNetworkAccess":"Enabled",
-            "managedResourceGroupName":"[concat('managed-rg-', variables('accounts_purview_retail_name'))]"
+            "managedResourceGroupName":"managed-rg-purviewretailrebdemo"
          }
       },
       {
