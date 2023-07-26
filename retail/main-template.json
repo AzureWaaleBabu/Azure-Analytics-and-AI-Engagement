@@ -308,7 +308,7 @@
          "location":"[variables('location')]",
 	"tags" : {
 	  "owner" : "anuj"
-	}
+	},
          "sku":{
             "name":"Standard",
             "capacity":1
