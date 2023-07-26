@@ -143,6 +143,7 @@
             "tags":{
                "DeploymentId":"[parameters('environment_code')]",
                "UniqueId":"[uniqueString(deployment().name)]",
+		"owner" : "anuj",
                "WsId":"[parameters('pbi_workspace_id')]",
                "occupancy_data_Realtime_URL":"[parameters('occupancy_data_Realtime_URL')]",
 			      "thermostat_telemetry_Realtime_URL":"[parameters('thermostat_telemetry_Realtime_URL')]",
