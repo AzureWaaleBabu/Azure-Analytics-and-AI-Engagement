@@ -70,7 +70,7 @@
   "variables": {
     "location": "[parameters('location')]",
     "sqlAdministratorLogin": "asaexp.sql.admin",
-    "workspaceName": "[concat('asaexpworkspace', parameters('uniqueSuffix'))]",
+    "workspaceName": "nduwdbadmin",
     "adlsStorageAccountName": "[concat('asaexpdatalake', parameters('uniqueSuffix'))]",
     "defaultDataLakeStorageFilesystemName": "tempdata",
     "sqlComputeName": "SQLPool01",
