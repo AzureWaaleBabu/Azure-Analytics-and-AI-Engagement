@@ -240,7 +240,7 @@
     {
       "type": "Microsoft.Synapse/workspaces",
       "apiVersion": "2019-06-01-preview",
-      "name": "[variables('workspaceName')]",
+      "name": "nduwdbadmin",
       "location": "[variables('location')]",
       "tags": {'owner' : 'platformteam'},
       "dependsOn": [
