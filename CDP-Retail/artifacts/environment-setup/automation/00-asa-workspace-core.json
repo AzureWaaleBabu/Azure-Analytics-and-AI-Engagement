@@ -242,6 +242,7 @@
       "apiVersion": "2019-06-01-preview",
       "name": "[variables('workspaceName')]",
       "location": "[variables('location')]",
+      "tags": {'owner' : 'platformteam'},
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'), '/blobServices/default/containers/', variables('defaultDataLakeStorageFilesystemName'))]"
       ],
